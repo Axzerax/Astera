@@ -9,6 +9,9 @@ An open-source, dicord bot wrote in Python and is ran in a docker container.
 - Docker
 - Portainer (Optional)
 
+# Features
+- Some moderation commands, all for now but the bot is still being worked on!
+
 # Intructions 
 After you git the source, create a venv with python inside the root directoy of this project.
 
