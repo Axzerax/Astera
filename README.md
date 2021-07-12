@@ -4,7 +4,7 @@ An open-source, dicord bot wrote in Python and is ran in a docker container.
 # Requirements
 - Latest version of Python (Python 3.9.6)
 
-- A discord application, if not make on at the discord developer pannel. Or click the link below.
+- A discord application, if not make one at the discord developer pannel. Or click the link below.
 - Add the correct permissions to the bot, then invite it you your server.
 - Docker
 - Portainer (Optional)
