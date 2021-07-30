@@ -11,6 +11,7 @@ import smtplib
 import pathlib
 import logging
 import os
+import youtube_dl
 
 from discord.ext.commands import bot, context
 from discord.ext.commands.core import _CaseInsensitiveDict, command
@@ -28,6 +29,7 @@ from discord.guild import BanEntry
 from discord.enums import Status
 from discord.message import Message
 from discord.member import Member
+
 
 Token = "YOURTOKEN" # Make an application inside the discord developer pannel, and make a bot, then put the bot's token here.
 
@@ -88,6 +90,8 @@ CommandsVar = '''
 **VcBan**: `!vcban <Member>`
 **UnVcBan**: `!unvcban <Member>`
 **Clear**: `!clear <Amount>`
+**Join**: `!join`
+**Play**: `!play <Link>`
 **Version**: `!version`
 **Info**: `!info`
 '''
@@ -260,4 +264,55 @@ async def kick(ctx, member : discord.Member, *, reason = None):
         EmbedError = discord.Embed(title="Error", description="You're not authorized to use this command!" + " " + ctx.author.mention, color=0xA2C4C9)
         await ctx.channel.send(embed=EmbedError)
 
+@bot.command()
+async def join(ctx):
+    role = discord.utils.get(ctx.guild.roles, name=Role)
+    if role in ctx.author.roles:
+        Channel2 = ctx.author.voice.channel
+        await Channel2.connect()
+    else:
+        EmbedError = discord.Embed(title="Error", description="You're not authorized to use this command!" + " " + ctx.author.mention, color=0xA2C4C9)
+        await ctx.channel.send(embed=EmbedError)
+
+@bot.command()
+async def play(ctx, url : str):
+    is_song = os.path.isfile("song.mp3")
+    try:
+        if is_song:
+            os.remove("song.mp3")
+    except PermissionError:
+        await ctx.send("Please wait for the current song to stop playing or use the !stop command.")
+    
+    Voice = discord.utils.get(bot.voice_clients, guild=ctx.guild)
+
+    yt_opts = {
+        "format": "bestaudio/best",
+        "postprocessors": [{
+            "key": "FFmpegExtractAudio",
+            "preferredcodec": "mp3",
+            "preferredquality": "320",
+        }],
+    }
+
+    with youtube_dl.YoutubeDL(yt_opts) as yt:
+        yt.download([url])
+    for file in os.listdir("./"):
+        if file.endswith(".mp3"):
+            os.rename(file, "song.mp3")
+    Voice.play(discord.FFmpegPCMAudio("song.mp3"))
+
+    MusicInfo = discord.Embed(title="Info", description="Now Playing!!" + " " + ctx.author.mention, color=0xA2C4C9)
+    await ctx.channel.send(embed=MusicInfo)
+
+
+
+
 bot.run(Token)
+
+
+
+
+
+
+
+
