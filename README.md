@@ -22,5 +22,5 @@ After you git the source, create a venv with python inside the root directoy of 
 5. Finished!
 
 # Links
-https://discord.com/developers/applications
-https://ffmpeg.org/
+- https://discord.com/developers/applications
+- https://ffmpeg.org/
