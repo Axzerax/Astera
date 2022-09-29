@@ -11,3 +11,5 @@ pathlib
 requests
 youtube-dl
 
+
+rust branch
